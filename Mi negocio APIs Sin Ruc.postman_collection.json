@@ -1,0 +1,908 @@
+{
+	"info": {
+		"_postman_id": "e6a3467d-a9d5-49e0-8874-995dd0114692",
+		"name": "Mi negocio APIs Sin Ruc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32843103"
+	},
+	"item": [
+		{
+			"name": "Crear Categoria",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"El Object tiene la estructura\", () => {",
+							"  const expectedObject = {",
+							"    \"success\": true",
+							"  };",
+							"  pm.expect(pm.response.json()).to.deep.include(expectedObject);",
+							"});",
+							"",
+							"pm.test(\"El test respondio 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"",
+							"pm.test(\"El response debe ser valido y tener un body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"categoryname\", \"Nueva Categoria\");",
+							"",
+							"//crea el nombre de categoria con el sufijo YYYYMMDDhhmmss",
+							"var timeStamp = require('moment');",
+							"pm.environment.set(\"categoryname\",\"Nueva Categoria_\"+timeStamp().format(\"YYYYMMDDhhmmss\"));",
+							"",
+							"//crea orden randomico para esta categoria",
+							"",
+							"",
+							"function getRandomInt(max) {",
+							"  return Math.floor(Math.random() * max);",
+							"}",
+							"console.log(getRandomInt(20));",
+							"pm.environment.set(\"order\",getRandomInt(20));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"name\": \"{{categoryname}}\",\n\"order\": {{order}}\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://minegocioqa.store/api/categories",
+					"protocol": "https",
+					"host": [
+						"minegocioqa",
+						"store"
+					],
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Categorias",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time es menor a 700 ms\",function(){",
+							"pm.expect(pm.response.responseTime).to.be.below(700);",
+							"});",
+							"",
+							"pm.test(\"El test respondio 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"El response debe ser valido y tener un body\", function () {",
+							"     pm.response.to.be.ok;",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://minegocioqa.store/api/categories",
+					"protocol": "https",
+					"host": [
+						"minegocioqa",
+						"store"
+					],
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"El body contiene la cadena true\",() => {",
+							"  pm.expect(pm.response.text()).to.include(\"true\");",
+							"});",
+							"",
+							"pm.test(\"El test fue exitoso\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"El Object tiene la estructura\", () => {",
+							"  const expectedObject = {",
+							"    \"success\": true",
+							"  };",
+							"  pm.expect(pm.response.json()).to.deep.include(expectedObject);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							"var timeStamp = require('moment');",
+							"pm.environment.set(\"product_name\",\"Nuevo_Producto_\"+timeStamp().format(\"YYYYMMDDhhmmss\"));",
+							"pm.environment.set(\"product_description_name\", \"Descripción en <b>html</b>\");",
+							"pm.environment.set(\"product_short_description\", \"Nueva Categoria\");",
+							"pm.environment.set(\"product_price\", 10000);",
+							"pm.environment.set(\"product_old_price\",9000);",
+							"pm.environment.set(\"product_published\",true);",
+							"pm.environment.set(\"product_featured\", true);",
+							"pm.environment.set(\"product_on_sale\",true)",
+							"pm.environment.set(\"product_has_stock\",true);",
+							"pm.environment.set(\"product_stock\", 10);",
+							"pm.environment.set(\"product_minimum_stock\", 2);",
+							"pm.environment.set(\"product_weight\",10),",
+							"pm.environment.set(\"product_longitude\", 10),",
+							"pm.environment.set(\"product_width\",10);",
+							"pm.environment.set(\"product_height\", 10);",
+							"pm.environment.set(\"product_order\",1); ",
+							"pm.environment.set (\"product_sku\", \"ABC123\");",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"product_name\": \"{{product_name}}\",\n\"description\": \"{{product_description_name}}\",\n\"short_description\": \"{{product_short_description}}\",\n\"price\": {{product_price}},\n\"old_price\": {{product_old_price}},\n\"published\": \"{{product_published}}\",\n\"featured\": \"{{product_featured}}\",\n\"on_sale\": \"{{product_on_sale}}\",\n\"has_stock\": \"{{product_has_stock}}\",\n\"stock\": {{product_stock}},\n\"minimum_stock\": {{product_minimum_stock}},\n\"weight\": {{product_weight}},\n\"longitude\": {{product_longitude}},\n\"width\": {{product_width}},\n\"height\": {{product_height}},\n\"order\": {{product_order}} ,\n\"sku\": \"{{product_sku}}\",\n\"category\": \"Categoría 1,Categoría 2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://minegocioqa.store/api/products",
+					"protocol": "https",
+					"host": [
+						"minegocioqa",
+						"store"
+					],
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Producto Con Categorias Inexistentes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"El body contiene la cadena true\",() => {",
+							"  pm.expect(pm.response.text()).to.include(\"true\");",
+							"});",
+							"",
+							"pm.test(\"El test fue exitoso\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"El Object tiene la estructura\", () => {",
+							"  const expectedObject = {",
+							"    \"success\": true",
+							"  };",
+							"  pm.expect(pm.response.json()).to.deep.include(expectedObject);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							"var timeStamp = require('moment');",
+							"pm.environment.set(\"product_name\",\"Nuevo_Producto_\"+timeStamp().format(\"YYYYMMDDhhmmss\"));",
+							"pm.environment.set(\"product_description_name\", \"Descripción en <b>html</b>\");",
+							"pm.environment.set(\"product_short_description\", \"Nueva Categoria\");",
+							"pm.environment.set(\"product_price\", 10000);",
+							"pm.environment.set(\"product_old_price\",9000);",
+							"pm.environment.set(\"product_published\",true);",
+							"pm.environment.set(\"product_featured\", true);",
+							"pm.environment.set(\"product_on_sale\",true)",
+							"pm.environment.set(\"product_has_stock\",true);",
+							"pm.environment.set(\"product_stock\", 10);",
+							"pm.environment.set(\"product_minimum_stock\", 2);",
+							"pm.environment.set(\"product_weight\",10),",
+							"pm.environment.set(\"product_longitude\", 10),",
+							"pm.environment.set(\"product_width\",10);",
+							"pm.environment.set(\"product_height\", 10);",
+							"pm.environment.set(\"product_order\",1); ",
+							"pm.environment.set (\"product_sku\", \"ABC123\");",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"product_name\": \"{{product_name}}\",\n\"description\": \"{{product_description_name}}\",\n\"short_description\": \"{{product_short_description}}\",\n\"price\": {{product_price}},\n\"old_price\": {{product_old_price}},\n\"published\": \"{{product_published}}\",\n\"featured\": \"{{product_featured}}\",\n\"on_sale\": \"{{product_on_sale}}\",\n\"has_stock\": \"{{product_has_stock}}\",\n\"stock\": {{product_stock}},\n\"minimum_stock\": {{product_minimum_stock}},\n\"weight\": {{product_weight}},\n\"longitude\": {{product_longitude}},\n\"width\": {{product_width}},\n\"height\": {{product_height}},\n\"order\": {{product_order}} ,\n\"sku\": \"{{product_sku}}\",\n\"category\": \"Categoría 55,Categoría66\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://minegocioqa.store/api/products",
+					"protocol": "https",
+					"host": [
+						"minegocioqa",
+						"store"
+					],
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Productos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"const response = pm.response.json();",
+							"",
+							"// Asegurarse de que hay datos para procesar",
+							"pm.test(\"Response has data\", function() {",
+							"    pm.expect(response.data).to.be.an('array').that.is.not.empty;",
+							"});",
+							"",
+							"// Encontrar el ultimo item en el array \"data\"",
+							"const lastItem = response.data[response.data.length - 1];",
+							"",
+							"// Chequear que el ultimo item exista y que tenga la propiedad 'id' ",
+							"pm.test(\"Last item exists and has an id\", function() {",
+							"    pm.expect(lastItem).to.be.an('object');",
+							"    pm.expect(lastItem).to.have.property('id');",
+							"});",
+							"",
+							"// Setear la variable como una variable de entorno",
+							"pm.environment.set(\"lastItemId\", lastItem.id);",
+							"console.log(\"Last Item ID: \" + lastItem.id);",
+							"pm.globals.set(\"variable_key\", lastItem.id);",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://minegocioqa.store/api/products",
+					"protocol": "https",
+					"host": [
+						"minegocioqa",
+						"store"
+					],
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar Producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"El test fue exitoso\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"El Object tiene la estructura\", () => {",
+							"  const expectedObject = {",
+							"    \"success\": true,",
+							"    \"msg\": \"Encolado exitosamente\"",
+							"  };",
+							"  pm.expect(pm.response.json()).to.deep.include(expectedObject);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"product_name\", \"Producto Actualizado\");"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n\"name\": \"{{product_name}}\",\n\"has_variants\": true,\n\"variant_id\": 1,\n\"sku\": 222\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://minegocioqa.store/api/products/{{variable_key}}",
+					"protocol": "https",
+					"host": [
+						"minegocioqa",
+						"store"
+					],
+					"path": [
+						"api",
+						"products",
+						"{{variable_key}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Productos Por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"El test fue exitoso\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://minegocioqa.store/api/products/{{variable_key}}",
+					"protocol": "https",
+					"host": [
+						"minegocioqa",
+						"store"
+					],
+					"path": [
+						"api",
+						"products",
+						"{{variable_key}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar Variantes de Productos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"El test fue exitoso\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"El Object tiene la estructura\", () => {",
+							"  const expectedObject = {",
+							"    \"success\": true,",
+							"    \"msg\": \"Encolado exitosamente\"",
+							"  };",
+							"  pm.expect(pm.response.json()).to.deep.include(expectedObject);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n    \"token\":123,\n \"variants\": [\n {\n \"sku\": \"100\",\n \"quantity\": 10,\n \"price\": 1500\n },\n {\n \"sku\": \"222\",\n \"quantity\": 20,\n \"price\": 10000\n }\n ]\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://minegocioqa.store/api/variants",
+					"protocol": "https",
+					"host": [
+						"minegocioqa",
+						"store"
+					],
+					"path": [
+						"api",
+						"variants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Pedidos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"El test fue exitoso\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"El body contiene la cadena true\",() => {",
+							"  pm.expect(pm.response.text()).to.include(\"true\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://minegocioqa.store/api/orders",
+					"protocol": "https",
+					"host": [
+						"minegocioqa",
+						"store"
+					],
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Contactos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"El test fue exitoso\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"El body contiene la cadena true\",() => {",
+							"  pm.expect(pm.response.text()).to.include(\"true\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://minegocioqa.store/api/contacts",
+					"protocol": "https",
+					"host": [
+						"minegocioqa",
+						"store"
+					],
+					"path": [
+						"api",
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"El test fue exitoso\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"El body contiene la cadena true\",() => {",
+							"  pm.expect(pm.response.text()).to.include(\"true\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://minegocioqa.store/api/users",
+					"protocol": "https",
+					"host": [
+						"minegocioqa",
+						"store"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Subscriptores",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"El test fue exitoso\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"El body contiene la cadena true\",() => {",
+							"  pm.expect(pm.response.text()).to.include(\"true\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://minegocioqa.store/api/subscriptors",
+					"protocol": "https",
+					"host": [
+						"minegocioqa",
+						"store"
+					],
+					"path": [
+						"api",
+						"subscriptors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Onboarding Obtener Datos de Cliente",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							"",
+							"",
+							"function getRandomInt(max) {",
+							"  return Math.floor(Math.random() * max);",
+							"}",
+							"console.log(getRandomInt(8000000));",
+							"pm.environment.set(\"ci\",getRandomInt(8000000));",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"El test fue exitoso\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"El body contiene la cadena true\",() => {",
+							"  pm.expect(pm.response.text()).to.not.include(\"identidad no encontrada\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.minegocioqa.store/onboarding/identity-number/{{ci}}",
+					"protocol": "https",
+					"host": [
+						"www",
+						"minegocioqa",
+						"store"
+					],
+					"path": [
+						"onboarding",
+						"identity-number",
+						"{{ci}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "hI5w17GWC5JtVE1c19f06OsCGEpfLbo8",
+			"type": "string"
+		}
+	]
+}
